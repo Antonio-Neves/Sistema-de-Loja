@@ -7,6 +7,9 @@
 
 ## Installation Steps
 
+### 0. Download Python Manager
+https://www.python.org/downloads/
+
 ### 1. Create and activate virtual environment
 ```bash
 # Create virtual environment
