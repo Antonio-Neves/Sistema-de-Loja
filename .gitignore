@@ -22,8 +22,7 @@ media
 htmlcov/*
 
 # Files
-/my_portfolio/settings_original.py
-/my_portfolio/settings_test.py
+# **/migrations/*.py
 
 # Testes
 
