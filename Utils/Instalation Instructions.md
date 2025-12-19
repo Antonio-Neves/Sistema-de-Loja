@@ -10,7 +10,7 @@
 ### 0. Download Python Manager
 https://www.python.org/downloads/
 
-Alterar caminho para 
+### Alterar caminho para o activate no ficheiro run_waitress.bat
 
 ### 1. Create and activate virtual environment
 ```bash
