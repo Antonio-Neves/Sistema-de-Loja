@@ -10,6 +10,8 @@
 ### 0. Download Python Manager
 https://www.python.org/downloads/
 
+Alterar caminho para 
+
 ### 1. Create and activate virtual environment
 ```bash
 # Create virtual environment
@@ -24,7 +26,7 @@ source venv/bin/activate
 
 ### 2. Install dependencies
 ```bash
-pip install django pillow
+pip install django pillow waitress whitenoise dj-database-url psycopg2-binary
 ```
 
 ### 3. Create Django project (if starting fresh)
