@@ -26,7 +26,7 @@ source venv/bin/activate
 
 ### 2. Install dependencies
 ```bash
-pip install django pillow waitress whitenoise dj-database-url psycopg2-binary
+pip install django pillow waitress whitenoise dj-database-url python-decouple psycopg2-binary 
 ```
 
 ### 3. Create Django project (if starting fresh)
