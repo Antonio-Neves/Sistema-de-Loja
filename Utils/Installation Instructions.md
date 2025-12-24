@@ -36,25 +36,33 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 4. Install dependencies
+### 6. Install dependencies
 ```
 pip install django pillow waitress whitenoise dj-database-url python-decouple psycopg2-binary 
 ```
 
-### 5. Change path in file, run_waitress.bat
+### 7. Change path in file, run_waitress.bat
 
-### 7. Run migrations
+### 8. Run migrations
 ```
 python manage.py makemigrations
 python manage.py migrate
+
+python manage.py collectstatic
 ```
 
-### 8. Create superuser
+### 9. collect static files
+```
+python manage.py collectstatic
+```
+
+### 10. Create superuser
 ```
 python manage.py createsuperuser
 ```
 
-### 9. Run development server
-```
-python manage.py runserver
-```
+### 10. Create system users
+
+Remember to mark team menber in admin
+
+### 11. Configure NSSM
