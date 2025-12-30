@@ -1,10 +1,10 @@
 {% extends 'store/base.html' %}
 
-{% block title %}{{ action }} Customer - Store Management{% endblock %}
+{% block title %}{{ action }} Cliente{% endblock %}
 
 {% block content %}
 <div class="mb-4">
-    <h2><i class="bi bi-people"></i> {{ action }} Customer</h2>
+    <h2><i class="bi bi-people"></i> {{ action }} Cliente</h2>
 </div>
 
 <div class="row justify-content-center">
@@ -15,7 +15,7 @@
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label class="form-label">Name *</label>
+                        <label class="form-label">Nome *</label>
                         {{ form.name }}
                         {% if form.name.errors %}
                             <div class="text-danger">{{ form.name.errors }}</div>
@@ -24,7 +24,7 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Phone *</label>
+                            <label class="form-label">Telefone *</label>
                             {{ form.phone }}
                             {% if form.phone.errors %}
                                 <div class="text-danger">{{ form.phone.errors }}</div>
@@ -43,15 +43,15 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Address</label>
+                        <label class="form-label">Endereço</label>
                         {{ form.address }}
                     </div>
 
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-check-circle"></i> Save Customer
+                        <i class="bi bi-check-circle"></i> Salvar Cliente
                     </button>
                     <a href="{% url 'customer_list' %}" class="btn btn-secondary">
-                        Cancel
+                        Cancelar
                     </a>
                 </form>
             </div>

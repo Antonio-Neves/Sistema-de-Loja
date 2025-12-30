@@ -209,13 +209,13 @@ def customer_create(request):
         if form.is_valid():
             customer = form.save()
             messages.success(request,
-                             f'Customer "{customer.name}" created successfully!')
+                             f'Cliente "{customer.name}" criado com sucesso!')
             return redirect('customer_list')
     else:
         form = CustomerForm()
 
     return render(request, 'store/customer_form.html',
-                  {'form': form, 'action': 'Create'})
+                  {'form': form, 'action': 'Criar'})
 
 
 @login_required
