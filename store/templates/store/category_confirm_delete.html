@@ -1,0 +1,51 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Excluir Categoria{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2><i class="bi bi-trash"></i> Excluir Categoria</h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Atenção!</strong> Tem certeza que deseja excluir esta categoria?
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Detalhes da Categoria:</h5>
+                    <ul class="list-unstyled">
+                        <li><strong>Nome:</strong> {{ category.name }}</li>
+                        {% if category.description %}
+                            <li><strong>Descrição:</strong> {{ category.description }}</li>
+                        {% endif %}
+                        <li><strong>Produtos nesta categoria:</strong> {{ category.products.count }}</li>
+                    </ul>
+                    
+                    {% if category.products.count > 0 %}
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            Esta categoria possui <strong>{{ category.products.count }} produto(s)</strong> associado(s). 
+                            Eles não serão excluídos, apenas ficarão sem categoria.
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Sim, Excluir
+                    </button>
+                    <a href="{% url 'category_list' %}" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

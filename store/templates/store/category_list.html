@@ -21,6 +21,7 @@
                             <th>Description</th>
                             <th>Products</th>
                             <th>Created</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,6 +35,18 @@
                                     </span>
                                 </td>
                                 <td>{{ category.created_at|date:"d/m/Y" }}</td>
+                                <td>
+                                    <a href="{% url 'category_update' category.id %}"
+                                       class="btn btn-sm btn-outline-primary"
+                                       title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'category_delete' category.id %}"
+                                       class="btn btn-sm btn-outline-danger"
+                                       title="Excluir">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

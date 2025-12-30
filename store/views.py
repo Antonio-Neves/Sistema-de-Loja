@@ -142,13 +142,46 @@ def category_create(request):
         if form.is_valid():
             category = form.save()
             messages.success(request,
-                             f'Category "{category.name}" created successfully!')
+                             f'Categoria "{category.name}" creada com sucesso!')
             return redirect('category_list')
     else:
         form = CategoryForm()
 
     return render(request, 'store/category_form.html',
-                  {'form': form, 'action': 'Create'})
+                  {'form': form, 'action': 'Criar'})
+
+
+@login_required
+def category_update(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            messages.success(request,
+                             f'Categoria "{category.name}" atualizada com sucesso!')
+            return redirect('category_list')
+    else:
+        form = CategoryForm(instance=category)
+
+    return render(request, 'store/category_form.html',
+                  {'form': form, 'action': 'Editar', 'category': category})
+
+
+@login_required
+def category_delete(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+
+    if request.method == 'POST':
+        category_name = category.name
+        category.delete()
+        messages.success(request,
+                         f'Categoria "{category_name}" excluída com sucesso!')
+        return redirect('category_list')
+
+    return render(request, 'store/category_confirm_delete.html',
+                  {'category': category})
 
 
 # CUSTOMER VIEWS
