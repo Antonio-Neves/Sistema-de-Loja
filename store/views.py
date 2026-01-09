@@ -273,6 +273,7 @@ def sale_create(request):
         customer_id = request.POST.get('customer')
         payment_method = request.POST.get('payment_method')
         discount = request.POST.get('discount', 0)
+        notes = request.POST.get('notes', '')
 
         if not product_ids:
             messages.error(request, 'Add at least one product to the sale!')
@@ -283,7 +284,8 @@ def sale_create(request):
             user=request.user,
             customer_id=customer_id if customer_id else None,
             payment_method=payment_method,
-            discount=float(discount) if discount else 0
+            discount=float(discount) if discount else 0,
+            notes = request.POST.get('notes', '')
         )
 
         total = 0
