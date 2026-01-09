@@ -85,7 +85,7 @@ def product_create(request):
         if form.is_valid():
             product = form.save()
             messages.success(request,
-                             f'Product "{product.name}" created successfully!')
+                             f'Produto "{product.name}" criado com sucesso!')
             return redirect('product_list')
     else:
         form = ProductForm()
@@ -103,13 +103,13 @@ def product_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request,
-                             f'Product "{product.name}" updated successfully!')
+                             f'Produto "{product.name}" alterado com sucesso!')
             return redirect('product_list')
     else:
         form = ProductForm(instance=product)
 
     return render(request, 'store/product_form.html',
-                  {'form': form, 'action': 'Update', 'product': product})
+                  {'form': form, 'action': 'Alterar', 'product': product})
 
 
 @login_required
@@ -120,7 +120,7 @@ def product_delete(request, pk):
         product.active = False
         product.save()
         messages.success(request,
-                         f'Product "{product.name}" deleted successfully!')
+                         f'Produto "{product.name}" eliminado com sucesso!')
         return redirect('product_list')
 
     return render(request, 'store/product_confirm_delete.html',
