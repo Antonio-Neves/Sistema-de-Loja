@@ -1,0 +1,106 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Cancelar Venda #{{ sale.id }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2><i class="bi bi-x-circle"></i> Cancelar Venda #{{ sale.id }}</h2>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <strong>Atenção!</strong> Esta ação cancelará a venda e devolverá os produtos ao estoque.
+                </div>
+
+                <!-- Sale Details -->
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Detalhes da Venda</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Data/Hora:</strong> {{ sale.created_at|date:"d/m/Y H:i" }}</p>
+                                <p><strong>Cliente:</strong> {{ sale.customer.name|default:"Cliente Avulso" }}</p>
+                                <p><strong>Forma de Pagamento:</strong> {{ sale.get_payment_method_display }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Vendedor:</strong> {{ sale.user.get_full_name|default:sale.user.username }}</p>
+                                <p><strong>Total:</strong> <span class="text-success">R$ {{ sale.final_total|floatformat:2 }}</span></p>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <h6>Itens da Venda:</h6>
+                        <ul>
+                            {% for item in sale.items.all %}
+                                <li>{{ item.product.name }} - Qtd: {{ item.quantity }} - R$ {{ item.subtotal|floatformat:2 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Cancellation Form -->
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-chat-left-text"></i>
+                            Motivo do Cancelamento *
+                        </label>
+                        <textarea name="reason"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Ex: Cliente desistiu da compra, erro no sistema, etc."
+                                  required></textarea>
+                        <small class="form-text text-muted">
+                            Este motivo ficará registrado no histórico da venda.
+                        </small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">
+                            <i class="bi bi-shield-lock"></i>
+                            Senha do Superuser *
+                        </label>
+                        <input type="password"
+                               name="password"
+                               class="form-control"
+                               placeholder="Digite sua senha para confirmar"
+                               required
+                               autofocus>
+                        <small class="form-text text-muted">
+                            Apenas superusers podem cancelar vendas.
+                        </small>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>O que acontecerá:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li>A venda será marcada como CANCELADA</li>
+                            <li>Os produtos retornarão ao estoque automaticamente</li>
+                            <li>O histórico será mantido para auditoria</li>
+                            <li>Esta ação NÃO pode ser desfeita</li>
+                        </ul>
+                    </div>
+
+                    <hr>
+
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-x-circle"></i> Confirmar Cancelamento
+                    </button>
+                    <a href="{% url 'sale_detail' sale.id %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Voltar
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
