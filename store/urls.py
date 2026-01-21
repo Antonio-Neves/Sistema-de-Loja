@@ -31,6 +31,7 @@ urlpatterns = [
     path('sales/create/', views.sale_create, name='sale_create'),
     path('sales/<int:pk>/', views.sale_detail, name='sale_detail'),
     path('sales/<int:pk>/cancel/', views.sale_cancel, name='sale_cancel'),
+    path('sales/<int:pk>/receipt/', views.sale_receipt, name='sale_receipt'),
 
     # Stock
     path('stock/movements/', views.stock_movements, name='stock_movements'),

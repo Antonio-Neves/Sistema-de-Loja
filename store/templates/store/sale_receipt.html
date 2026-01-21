@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota de Venda #{{ sale.id }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.5;
+            padding: 30mm 20mm;
+            background: white;
+        }
+
+        .invoice {
+            max-width: 170mm;
+            margin: 0 auto;
+            border: 2px solid #004F9F;
+            padding: 15mm;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #004F9F;
+            padding-bottom: 10mm;
+            margin-bottom: 10mm;
+        }
+
+        .company-logo {
+            font-size: 28pt;
+            font-weight: bold;
+            color: #004F9F;
+            margin-bottom: 5mm;
+        }
+
+        .company-info {
+            font-size: 10pt;
+            color: #666;
+            margin: 2mm 0;
+        }
+
+        .document-title {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #004F9F;
+            margin: 8mm 0 5mm 0;
+            text-align: center;
+        }
+
+        .document-number {
+            font-size: 14pt;
+            color: #666;
+            text-align: center;
+            margin-bottom: 8mm;
+        }
+
+        .info-section {
+            margin: 8mm 0;
+        }
+
+        .info-title {
+            font-weight: bold;
+            color: #004F9F;
+            font-size: 12pt;
+            border-bottom: 2px solid #004F9F;
+            padding-bottom: 2mm;
+            margin-bottom: 3mm;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3mm;
+            margin: 3mm 0;
+        }
+
+        .info-item {
+            padding: 2mm;
+            background: #f8f9fa;
+            border-left: 3px solid #FBB900;
+        }
+
+        .info-label {
+            font-weight: bold;
+            font-size: 9pt;
+            color: #666;
+        }
+
+        .info-value {
+            font-size: 11pt;
+            color: #000;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8mm 0;
+        }
+
+        .items-table th {
+            background: #004F9F;
+            color: white;
+            padding: 3mm;
+            text-align: left;
+            font-size: 10pt;
+        }
+
+        .items-table td {
+            padding: 3mm;
+            border-bottom: 1px solid #ddd;
+            font-size: 10pt;
+        }
+
+        .items-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .totals-section {
+            margin-top: 8mm;
+            float: right;
+            width: 60mm;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2mm 0;
+            font-size: 11pt;
+        }
+
+        .total-divider {
+            border-top: 1px solid #ddd;
+            margin: 2mm 0;
+        }
+
+        .total-final {
+            font-weight: bold;
+            font-size: 14pt;
+            color: #004F9F;
+            border-top: 2px solid #004F9F;
+            padding-top: 3mm;
+            margin-top: 3mm;
+        }
+
+        .payment-section {
+            clear: both;
+            margin-top: 15mm;
+            padding: 5mm;
+            background: #f8f9fa;
+            border-left: 5px solid #FBB900;
+        }
+
+        .notes-section {
+            margin-top: 8mm;
+            padding: 5mm;
+            background: #fff9e6;
+            border: 1px dashed #FBB900;
+        }
+
+        .footer {
+            margin-top: 15mm;
+            padding-top: 5mm;
+            border-top: 2px solid #004F9F;
+            text-align: center;
+            font-size: 9pt;
+            color: #666;
+        }
+
+        .cancelled-banner {
+            position: relative;
+            text-align: center;
+            font-weight: bold;
+            font-size: 32pt;
+            color: #dc3545;
+            border: 5px solid #dc3545;
+            padding: 10mm;
+            margin: 10mm 0;
+            transform: rotate(-5deg);
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .cancelled-info {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            padding: 5mm;
+            margin: 5mm 0;
+            border-radius: 3mm;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            .invoice {
+                border: none;
+                max-width: 100%;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+        }
+
+        .no-print {
+            text-align: center;
+            margin: 10mm 0;
+        }
+
+        .btn {
+            padding: 3mm 8mm;
+            margin: 0 3mm;
+            cursor: pointer;
+            border: none;
+            border-radius: 3mm;
+            font-size: 11pt;
+            font-weight: bold;
+        }
+
+        .btn-print {
+            background: #004F9F;
+            color: white;
+        }
+
+        .btn-close {
+            background: #6c757d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice">
+        <!-- Header -->
+        <div class="header">
+            <div class="company-logo">AN INFORMÁTICA</div>
+            <div class="company-info">São José do Araguaia, Xinguara, Pará</div>
+            <div class="company-info">Telefone: +55 94 981 044 215</div>
+        </div>
+
+        <div class="document-title">NOTA DE VENDA</div>
+        <div class="document-number">Nº {{ sale.id|stringformat:"06d" }}</div>
+
+        <!-- Cancelled Banner -->
+        {% if sale.is_cancelled %}
+        <div class="cancelled-banner">
+            *** CANCELADA ***
+        </div>
+        <div class="cancelled-info">
+            <strong>Venda Cancelada</strong><br>
+            Data: {{ sale.cancelled_at|date:"d/m/Y às H:i" }}<br>
+            Por: {{ sale.cancelled_by.username }}<br>
+            Motivo: {{ sale.cancellation_reason }}
+        </div>
+        {% endif %}
+
+        <!-- Sale Information -->
+        <div class="info-section">
+            <div class="info-title">DADOS DA VENDA</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Data de Emissão</div>
+                    <div class="info-value">{{ sale.created_at|date:"d/m/Y" }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Hora</div>
+                    <div class="info-value">{{ sale.created_at|date:"H:i:s" }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Vendedor</div>
+                    <div class="info-value">{{ sale.user.get_full_name|default:sale.user.username }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Forma de Pagamento</div>
+                    <div class="info-value">{{ sale.get_payment_method_display }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Information -->
+        {% if sale.customer %}
+        <div class="info-section">
+            <div class="info-title">DADOS DO CLIENTE</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Nome</div>
+                    <div class="info-value">{{ sale.customer.name }}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Telefone</div>
+                    <div class="info-value">{{ sale.customer.phone }}</div>
+                </div>
+                {% if sale.customer.cpf %}
+                <div class="info-item">
+                    <div class="info-label">CPF</div>
+                    <div class="info-value">{{ sale.customer.cpf }}</div>
+                </div>
+                {% endif %}
+                {% if sale.customer.email %}
+                <div class="info-item">
+                    <div class="info-label">E-mail</div>
+                    <div class="info-value">{{ sale.customer.email }}</div>
+                </div>
+                {% endif %}
+            </div>
+            {% if sale.customer.address %}
+            <div class="info-item" style="margin-top: 3mm; grid-column: 1 / -1;">
+                <div class="info-label">Endereço</div>
+                <div class="info-value">{{ sale.customer.address }}</div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Items Table -->
+        <div class="info-section">
+            <div class="info-title">PRODUTOS/SERVIÇOS</div>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Código</th>
+                        <th style="width: 40%;">Descrição</th>
+                        <th style="width: 10%;" class="text-center">Qtd</th>
+                        <th style="width: 20%;" class="text-right">Valor Unit.</th>
+                        <th style="width: 20%;" class="text-right">Valor Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in sale.items.all %}
+                    <tr>
+                        <td>{{ item.product.id }}</td>
+                        <td><strong>{{ item.product.name }}</strong></td>
+                        <td class="text-center">{{ item.quantity }}</td>
+                        <td class="text-right">R$ {{ item.price|floatformat:2 }}</td>
+                        <td class="text-right"><strong>R$ {{ item.subtotal|floatformat:2 }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Totals -->
+        <div class="totals-section">
+            <div class="total-row">
+                <span>Subtotal:</span>
+                <span>R$ {{ sale.total|floatformat:2 }}</span>
+            </div>
+            {% if sale.discount > 0 %}
+            <div class="total-row">
+                <span>Desconto:</span>
+                <span style="color: #dc3545;">- R$ {{ sale.discount|floatformat:2 }}</span>
+            </div>
+            <div class="total-divider"></div>
+            {% endif %}
+            <div class="total-row total-final">
+                <span>TOTAL:</span>
+                <span>R$ {{ sale.final_total|floatformat:2 }}</span>
+            </div>
+        </div>
+
+        <!-- Payment Info -->
+        <div class="payment-section">
+            <strong>PAGAMENTO:</strong> {{ sale.get_payment_method_display }}<br>
+            <strong>VALOR PAGO:</strong> R$ {{ sale.final_total|floatformat:2 }}
+        </div>
+
+        <!-- Notes -->
+        {% if sale.notes %}
+        <div class="notes-section">
+            <strong>OBSERVAÇÕES:</strong><br>
+            {{ sale.notes }}
+        </div>
+        {% endif %}
+
+        <!-- Footer -->
+        <div class="footer">
+            <div style="margin-bottom: 5mm;">
+                <strong>Obrigado pela preferência!</strong>
+            </div>
+            <div>
+                Este documento não possui valor fiscal<br>
+                Sistema de Gestão - AN Informática<br>
+                Impresso em: {{ "now"|date:"d/m/Y às H:i:s" }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Buttons -->
+    <div class="no-print">
+        <button onclick="window.print()" class="btn btn-print">
+            🖨️ Imprimir Nota
+        </button>
+        <button onclick="window.close()" class="btn btn-close">
+            ✖️ Fechar
+        </button>
+    </div>
+</body>
+</html>

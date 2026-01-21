@@ -447,3 +447,10 @@ def stock_adjustment(request):
         form = StockMovementForm()
 
     return render(request, 'store/stock_adjustment.html', {'form': form})
+
+
+# Receipt views
+@login_required
+def sale_receipt(request, pk):
+    sale = get_object_or_404(Sale, pk=pk)
+    return render(request, 'store/sale_receipt.html', {'sale': sale})
