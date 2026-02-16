@@ -1,6 +1,6 @@
 {% extends 'store/base.html' %}
 
-{% block title %}Vendas - Sistema de Gestão{% endblock %}
+{% block title %}Vendas{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -81,7 +81,17 @@
                                     </span>
                                 </td>
                                 <td>R$ {{ sale.total|floatformat:2 }}</td>
-                                <td>R$ {{ sale.discount|floatformat:2 }}</td>
+{#                                <td>R$ {{ sale.discount|floatformat:2 }}</td>#}
+                                <td>
+                                R$ {{ sale.discount_value|floatformat:2 }}
+                                {% if sale.discount_type == 'percent' %}
+                                    ({{ sale.discount|floatformat:0 }}%)
+                                {% endif %}
+                                </td>
+
+
+
+
                                 <td>
                                     <strong class="text-success">
                                         R$ {{ sale.final_total|floatformat:2 }}
