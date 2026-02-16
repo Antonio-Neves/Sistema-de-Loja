@@ -1,11 +1,11 @@
 {% extends 'store/base.html' %}
 
-{% block title %}Sale #{{ sale.id }} - Store Management{% endblock %}
+{% block title %}Venda #{{ sale.id }}{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>
-        <i class="bi bi-receipt"></i> Sale #{{ sale.id }}
+        <i class="bi bi-receipt"></i> Venda #{{ sale.id }}
         {% if sale.is_cancelled %}
             <span class="badge bg-danger">CANCELADA</span>
         {% endif %}
@@ -17,7 +17,7 @@
             </a>
         {% endif %}
         <a href="{% url 'sale_list' %}" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Back to Sales
+            <i class="bi bi-arrow-left"></i> Voltar a Vendas
         </a>
     </div>
 </div>
@@ -34,9 +34,9 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
+                                <th>Produto</th>
+                                <th>Preço</th>
+                                <th>Quantidade</th>
                                 <th>Subtotal</th>
                             </tr>
                         </thead>
@@ -60,33 +60,33 @@
         <!-- Sale Info -->
         <div class="card mb-4">
             <div class="card-header bg-white">
-                <h5 class="mb-0">Sale Information</h5>
+                <h5 class="mb-0">Informações sobre a Venda</h5>
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <strong>Date/Time:</strong><br>
-                    {{ sale.created_at|date:"d/m/Y H:i:s" }}
+                    <strong>Data/hora:</strong><br>
+                    {{ sale.created_at|date:"d/m/Y - H:i:s" }}
                 </div>
 
                 <div class="mb-3">
-                    <strong>Customer:</strong><br>
+                    <strong>Cliente:</strong><br>
                     {% if sale.customer %}
                         {{ sale.customer.name }}<br>
                         <small class="text-muted">{{ sale.customer.phone }}</small>
                     {% else %}
-                        Walk-in Customer
+                        Cliente não identificado
                     {% endif %}
                 </div>
 
                 <div class="mb-3">
-                    <strong>Payment Method:</strong><br>
+                    <strong>Forma de Pagamento:</strong><br>
                     <span class="badge bg-info">
                         {{ sale.get_payment_method_display }}
                     </span>
                 </div>
 
                 <div class="mb-3">
-                    <strong>Seller:</strong><br>
+                    <strong>Vendedor:</strong><br>
                     {{ sale.user.get_full_name|default:sale.user.username }}
                 </div>
 
@@ -103,7 +103,7 @@
 
                 {% if sale.notes %}
                     <div class="mb-3">
-                        <strong>Notes:</strong><br>
+                        <strong>Notas:</strong><br>
                         {{ sale.notes }}
                     </div>
                 {% endif %}
