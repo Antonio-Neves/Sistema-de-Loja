@@ -13,7 +13,7 @@ In the repository, rename the file '.env.example' to '.env' and make the necessa
 
 <hr>
 
-# Sistema de Gestão de Lojas
+## Sistema de Gestão de Lojas
 
 ### Pequeno sistema para gestão de pequenas lojas, comércios ou serviços.
 
