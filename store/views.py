@@ -17,18 +17,15 @@ from .forms import ProductForm, CategoryForm, CustomerForm, SaleForm, \
 def dashboard(request):
     # Get statistics
     today = timezone.now().date()
-    week_start = today - timedelta(
-        days=today.weekday())  # ← Monday of current week
-    # Current month
-    month_start = today.replace(day=1)
-    # Current year
-    year_start = today.replace(month=1, day=1)
+    week_start = today - timedelta(days=today.weekday())  # ← Monday of current week
+    month_start = today.replace(day=1)  # Current month
+    year_start = today.replace(month=1, day=1)  # Current year
 
     # Sales statistics - ONLY COMPLETED SALES (excluding canceled)
     today_sales = Sale.objects.filter(created_at__date=today,
                                       status='completed')
     week_sales = Sale.objects.filter(created_at__date__gte=week_start,
-                                     status='completed')  # ← FIXED
+                                     status='completed')
     month_sales = Sale.objects.filter(created_at__date__gte=month_start,
                                       status='completed')
     year_sales = Sale.objects.filter(created_at__date__gte=year_start,
@@ -44,15 +41,6 @@ def dashboard(request):
                        filter=Q(sale_items__sale__status='completed'))
         # ← ADDED filter
     ).order_by('-total_sold')[:5]
-
-    # Calculate profits
-    # def calculate_profit(sales_queryset):
-    #     total_profit = 0
-    #     for sale in sales_queryset:
-    #         for item in sale.items.all():
-    #             profit_per_item = (item.price - item.product.cost) * item.quantity
-    #             total_profit += profit_per_item
-    #     return total_profit
 
     def calculate_profit(sales_queryset):
         total_profit = 0
@@ -73,26 +61,6 @@ def dashboard(request):
     # Change aggregate to use final_total via Python (not DB aggregate)
     def calculate_total(sales_qs):
         return sum(sale.final_total for sale in sales_qs)
-
-    # context = {
-    #     'today_sales_total': today_sales.aggregate(
-    #         total_com_desconto=Sum(F('total') - F('discount'))
-    #     )['total_com_desconto'] or 0,
-    #     'today_profit': today_profit,
-    #     'week_sales_total': week_sales.aggregate(Sum('total'))[
-    #                             'total__sum'] or 0,
-    #     'week_profit': week_profit,
-    #     'month_sales_total': month_sales.aggregate(Sum('total'))[
-    #                              'total__sum'] or 0,
-    #     'month_profit': month_profit,
-    #     'year_sales_total': year_sales.aggregate(Sum('total'))[
-    #                             'total__sum'] or 0,
-    #     'year_profit': year_profit,
-    #     'low_stock_products': low_stock_products,
-    #     'best_sellers': best_sellers,
-    #     'recent_sales': Sale.objects.all()[:10],
-    #     # Shows all (including canceled for history)
-    # }
 
     context = {
         'today_sales_total': calculate_total(today_sales),
@@ -301,42 +269,6 @@ def customer_update(request, pk):
 
 
 # SALE VIEWS
-# @login_required
-# def sale_list(request):
-#     date_from = request.GET.get('date_from', '')
-#     date_to = request.GET.get('date_to', '')
-#
-#     sales = Sale.objects.all()
-#
-#     if date_from:
-#         sales = sales.filter(created_at__date__gte=date_from)
-#
-#     if date_to:
-#         sales = sales.filter(created_at__date__lte=date_to)
-#
-#     total = sales.aggregate(Sum('total'))['total__sum'] or 0
-#     sales_count = sales.count()
-#     average_ticket = total / sales_count if sales_count > 0 else 0
-#
-#     # Calculate profit
-#     total_profit = 0
-#     for sale in sales:
-#         for item in sale.items.all():
-#             profit_per_item = (item.price - item.product.cost) * item.quantity
-#             total_profit += profit_per_item
-#
-#     context = {
-#         'sales': sales[:50],
-#         'total': total,
-#         'average_ticket': average_ticket,
-#         'total_profit': total_profit,  # NEW
-#         'date_from': date_from,
-#         'date_to': date_to,
-#     }
-#
-#     return render(request, 'store/sale_list.html', context)
-
-
 @login_required
 def sale_list(request):
     date_from = request.GET.get('date_from', '')
