@@ -12,7 +12,7 @@ https://www.python.org/downloads/
 py install 3.14
 ```
 
-### 2.2 Install Python and Sublime Text
+### 2.2 Install Sublime Text
 https://www.sublimetext.com/
 
 
@@ -48,7 +48,9 @@ source venv/bin/activate
 
 ### 6. Install dependencies
 ```
-pip install django pillow waitress whitenoise dj-database-url python-decouple psycopg2-binary 
+python -m pip install --upgrade pip
+
+pip install -r requirements.txt 
 ```
 
 ### 7. Change path in file, run_waitress.bat
@@ -56,9 +58,8 @@ pip install django pillow waitress whitenoise dj-database-url python-decouple ps
 ### 8. Run migrations
 ```
 python manage.py makemigrations
-python manage.py migrate
 
-python manage.py collectstatic
+python manage.py migrate
 ```
 
 ### 9. collect static files
